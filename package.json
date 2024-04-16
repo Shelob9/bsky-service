@@ -1,35 +1,14 @@
 {
-  "name": "app",
-  "version": "0.0.2",
-  "private": true,
-  "scripts": {
-    "start": "node ./dist/www.js",
-    "prestart": "npm run build",
-    "prebuild": "mkdir -p dist/views && cp -R views/* dist/views/",
-    "build": "tsc"
+  "name": "bsky-service",
+  "module": "index.ts",
+  "type": "module",
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
   },
   "dependencies": {
-    "@skyware/bot": "^0.1.9",
-    "clean-css": "^4.1.11",
-    "constantinople": "^3.1.1",
-    "cookie-parser": "~1.4.4",
-    "debug": "~2.6.9",
-    "dotenv": "^16.4.5",
-    "express": "~4.16.1",
-    "http-errors": "~1.6.3",
-    "lorem-ipsum": "^2.0.3",
-    "md5": "^2.2.1",
-    "mersenne-twister": "^1.1.0",
-    "morgan": "~1.9.1",
-    "pug": "^2.0.4",
-    "uglify-js": "^2.6.0"
-  },
-  "devDependencies": {
-    "@types/cookie-parser": "^1.4.3",
-    "@types/express": "^4.17.17",
-    "@types/mersenne-twister": "^1.1.3",
-    "@types/morgan": "^1.9.5",
-    "@types/node": "^20.5.7",
-    "typescript": "^5.2.2"
+    "@skyware/bot": "^0.1.9"
   }
 }

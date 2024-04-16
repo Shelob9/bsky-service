@@ -1,8 +1,0 @@
-name: sample-typescript
-services:
-- environment_slug: node-js
-  github:
-    branch: main
-    deploy_on_push: false
-    repo: digitalocean/sample-typescript
-  name: sample-typescript
