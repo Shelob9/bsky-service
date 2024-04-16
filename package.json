@@ -10,5 +10,8 @@
   },
   "dependencies": {
     "@skyware/bot": "^0.1.9"
+  },
+  "scripts":{
+    "start": "bun run index.ts"
   }
 }
