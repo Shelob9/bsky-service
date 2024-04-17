@@ -1,6 +1,24 @@
-import { Bot } from "@skyware/bot";
+import { Bot, Post } from "@skyware/bot";
 const PORT: number = +(process.env.PORT || 8081);
 const NODE_ENV = process.env.NODE_ENV ?? "development";
+
+const postFactory = (post: Post) => {
+    return {
+        text: post.text,
+        cid: post.cid,
+        labels: post.labels,
+        author: {
+            did: post.author.did,
+            handle: post.author.handle,
+            displayName: post.author.displayName,
+        },
+        uri: post.uri,
+        createdAt: post.createdAt,
+        replyCount: post.replyCount,
+        likeCount: post.likeCount,
+    }
+
+}
 const server = Bun.serve({
     port: PORT,
     fetch: async(req) => {
@@ -27,20 +45,14 @@ const server = Bun.serve({
             });
         try {
             const posts = await bot.getUserLikes('did:plc:payluere6eb3f6j5nbmo2cwy');
+            const uri = posts.posts[0].uri
+            const post = await bot.getPost(uri);
+            let data = {
+                uri,
+                post: postFactory(post),
+                likes: posts.posts.map(postFactory),
 
-            let data = posts.posts.map((post) => {
-                const author = post.author;
-                return Object.assign({},{
-                    text: post.text,
-                    author: {
-                        did: author.did,
-                        handle: author.handle,
-                        displayName: author.displayName,
-                    },
-                    uri: post.uri
-
-                });
-            });
+            }
             //@ts-ignore
             return new Response(JSON.stringify(data));
 
