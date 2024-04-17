@@ -22,10 +22,29 @@ const postFactory = (post: Post) => {
 const server = Bun.serve({
     port: PORT,
     fetch: async(req) => {
+        const url = new URL(req.url);
+        const token = url.searchParams.get('token') || req.headers.get('Authorization');
+        if( ! token ){
+            return new Response(JSON.stringify({
+                error: true,
+                errorObj: 'No token',
+            }),{
+                status: 401,
+            });
+        }
+        if( token !== process.env.AUTH_TOKEN ){
+            return new Response(JSON.stringify({
+                error: true,
+                message: 'Invalid token',
+            }),{
+                status: 403,
+            });
+        }
+
         if( ! process.env.BSKY_USERNAME ){
             return new Response(JSON.stringify({
                 error: true,
-                errorObj: 'No BSKY_USERNAME',
+                message: 'No BSKY_USERNAME',
             }),{
                 status: 400,
             });
@@ -33,7 +52,7 @@ const server = Bun.serve({
         if( ! process.env.BSKY_PASSWORD ){
             return new Response(JSON.stringify({
                 error: true,
-                errorObj: 'No BSKY_PASSWORD',
+                message: 'No BSKY_PASSWORD',
             }),{
                 status: 400,
             });
@@ -60,7 +79,7 @@ const server = Bun.serve({
             console.log(error);
             return new Response(JSON.stringify({
                 error: true,
-                errorObj: error,
+                message: 'API error'
             }));
         }
     },
