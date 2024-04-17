@@ -9,9 +9,10 @@
     "typescript": "^5.0.0"
   },
   "dependencies": {
-    "@skyware/bot": "^0.1.9"
+    "@skyware/bot": "^0.1.9",
+    "mastodon-api": "^1.3.0"
   },
-  "scripts":{
+  "scripts": {
     "start": "bun run index.ts",
     "dev": "bun run --watch index.ts"
   }

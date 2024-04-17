@@ -1,4 +1,5 @@
 import { Bot, Post } from "@skyware/bot";
+import Mastodon from 'mastodon-api';
 const PORT: number = +(process.env.PORT || 8081);
 const NODE_ENV = process.env.NODE_ENV ?? "development";
 
@@ -24,6 +25,18 @@ const server = Bun.serve({
     fetch: async(req) => {
         const url = new URL(req.url);
         const token = url.searchParams.get('token') || req.headers.get('Authorization');
+        if( url.pathname == '/mtest' ){
+            const M = new Mastodon({
+                access_token: 'AQ7c4IH__uZ0J7OF5t-IRx82Lne9KnYEDgnuwyBbCqo',
+                timeout_ms: 60*1000,  // optional HTTP request timeout to apply to all requests.
+                api_url: 'https://mastodon.social/api/v1/'
+              })
+              return M.get('timelines/home', {}).then((resp : any) => {
+                return new Response(JSON.stringify(resp.data));
+              })
+
+            return new Response(JSON.stringify({m:1}));
+        }
         if( ! token ){
             return new Response(JSON.stringify({
                 error: true,
