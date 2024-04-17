@@ -12,6 +12,7 @@
     "@skyware/bot": "^0.1.9"
   },
   "scripts":{
-    "start": "bun run index.ts"
+    "start": "bun run index.ts",
+    "dev": "bun run --watch index.ts"
   }
 }
