@@ -3,7 +3,10 @@ import Mastodon from 'mastodon-api';
 const PORT: number = +(process.env.PORT || 8081);
 const NODE_ENV = process.env.NODE_ENV ?? "development";
 
-const postFactory = (post: Post) => {
+const blueskyPostToUrl = (post: Post) => {
+    return `https://bsky.app/profile/${post.author.handle}/post/${post.uri.split('/').pop()}`;
+}
+const blueskyPostFactory = (post: Post) => {
     return {
         text: post.text,
         cid: post.cid,
@@ -17,6 +20,7 @@ const postFactory = (post: Post) => {
         createdAt: post.createdAt,
         replyCount: post.replyCount,
         likeCount: post.likeCount,
+        url: blueskyPostToUrl(post)
     }
 
 }
@@ -81,8 +85,8 @@ const server = Bun.serve({
             const post = await bot.getPost(uri);
             let data = {
                 uri,
-                post: postFactory(post),
-                likes: posts.posts.map(postFactory),
+                post: blueskyPostFactory(post),
+                likes: posts.posts.map(blueskyPostFactory),
 
             }
             //@ts-ignore
